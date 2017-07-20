@@ -1,4 +1,5 @@
 from flask import current_app
+from wxpy import Friend
 from wxpy.api.consts import TEXT
 
 description = """
@@ -22,6 +23,7 @@ def format_desc(plugin, prefix='  '):
 class HelpPlugin:
     name = 'HelpPlugin'
     version = '0.1'
+    chats = Friend
     msg_types = TEXT
     patterns = ['help']
     exclusive = True
