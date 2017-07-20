@@ -81,14 +81,17 @@ class SimSimiPlugin:
     msg_types = TEXT
     except_self = True
     run_async = True
-    config = {}
+    patterns = None
+    exclusive = False
+    description = description
     exclude_patterns = ['help']
 
     @classmethod
     def main(cls, msg):
-        text = msg.text.lower()
-        if not any(p in text for p in cls.exclude_patterns):
-            return simsimi.chat(text).decode('utf-8').strip()
+        rs = simsimi.chat(msg.text.lower()).strip()
+        if not isinstance(rs, str):
+            rs = rs.decode('utf-8')
+        return rs
 
 
 def export():
