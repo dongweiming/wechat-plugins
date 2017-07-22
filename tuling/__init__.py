@@ -1,9 +1,10 @@
+from flask import current_app
 from wxpy import Tuling
 from wxpy.api.consts import TEXT
 
 
 description = """
-图灵机器人，触发条件: @Python之美 即可
+图灵机器人，触发条件: @群主 即可
 """
 
 try:
@@ -17,12 +18,19 @@ tuling = Tuling(api_key=TULING_KEY)
 class TulingPlugin:
     name = 'TulingPlugin'
     version = '0.1'
-    patterns = ['@Python之美']
+    msg_types = TEXT
     description = description
 
     @classmethod
     def main(cls, msg):
-        return tuling.do_reply(msg)
+        nick_name = current_app.nick_name if current_app else None
+        if nick_name is not None:
+            at = '@{} '.format(nick_name)
+            text = msg.text.lower()
+            if at in text:
+                msg.text = text.replace(at, '')
+                tuling.do_reply(msg)
+        return ''  # do_reply已经是回应了，所以不会返回再回应一次
 
 
 def export():
