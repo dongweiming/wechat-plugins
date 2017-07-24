@@ -25,10 +25,10 @@ class TulingPlugin:
     def main(cls, msg):
         nick_name = current_app.nick_name if current_app else None
         if nick_name is not None:
-            at = '@{} '.format(nick_name)
-            text = msg.text.lower()
+            at = '@{}'.format(nick_name)
+            text = msg.text
             if at in text:
-                msg.text = text.replace(at, '')
+                msg.text = text.replace(at, '').replace('\u2005', '').strip()
                 tuling.do_reply(msg)
         return ''  # do_reply已经是回应了，所以不会返回再回应一次
 
